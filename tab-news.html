@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!--
+  功能名称: 新闻 Tab 选项卡
+  作者: 冯玺成
+  建立时间: 2026-11-02 13:39
+  使用模型: DeepSeek-V4.1-Flash
+  功能简介: 报版样式的四栏新闻选项卡，默认选中"国内新闻"，点击或键盘方向键切换版面条目，选项卡逻辑由外部 js/fxc-tabs.js 提供。
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新闻版面 · Tab 选项卡</title>
+<style>
+  :root {
+    --fxc_newsprint: #F7F5EF;
+    --fxc_ink: #1B1A17;
+    --fxc_ink_soft: #6B675D;
+    --fxc_halfline: #D5D0C3;
+    --fxc_mark: #A82A22;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--fxc_newsprint);
+    color: var(--fxc_ink);
+    padding: 48px 20px 64px;
+  }
+  .fxc_page { max-width: 760px; margin: 0 auto; }
+
+  /* 报头 */
+  .fxc_masthead_top {
+    display: flex; justify-content: space-between;
+    font-size: 11.5px; color: var(--fxc_ink_soft); letter-spacing: .04em;
+  }
+  .fxc_logo {
+    font-family: "Songti SC", "SimSun", Georgia, serif;
+    font-size: clamp(34px, 7vw, 54px);
+    font-weight: normal; letter-spacing: .16em;
+    text-align: center; padding: 10px 0 14px;
+    border-bottom: 2px solid var(--fxc_ink);
+  }
+
+  /* 栏目标签：作为版面的索引，用发丝线分隔 */
+  .fxc_tabs {
+    display: flex;
+    border-bottom: 1px solid var(--fxc_halfline);
+  }
+  .fxc_tab {
+    flex: 1;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--fxc_ink_soft);
+    background: none; border: none;
+    padding: 14px 4px 12px;
+    cursor: pointer;
+    position: relative;
+    border-left: 1px solid var(--fxc_halfline);
+    transition: color .18s ease;
+  }
+  .fxc_tab:first-child { border-left: none; }
+  .fxc_tab:hover { color: var(--fxc_ink); }
+  .fxc_tab:focus-visible {
+    outline: 2px solid var(--fxc_mark);
+    outline-offset: -2px;
+  }
+  .fxc_tab_active { color: var(--fxc_ink); font-weight: 600; }
+  .fxc_tab_active::after {
+    content: "";
+    position: absolute; left: 18%; right: 18%; bottom: -1px;
+    height: 2px; background: var(--fxc_mark);
+  }
+
+  /* 版面条目 */
+  .fxc_panels { padding-top: 28px; }
+  .fxc_panel[hidden] { display: none; }
+  .fxc_panel_active { animation: fxc_fade_in .28s ease-out both; }
+  @keyframes fxc_fade_in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .fxc_dateline {
+    font-size: 11.5px; color: var(--fxc_ink_soft);
+    letter-spacing: .08em; margin-bottom: 12px;
+  }
+  .fxc_headline {
+    font-family: "Songti SC", "SimSun", Georgia, serif;
+    font-size: clamp(24px, 4.4vw, 32px);
+    font-weight: normal; line-height: 1.42;
+    margin-bottom: 14px; max-width: 22em;
+  }
+  .fxc_lede {
+    font-family: "Songti SC", "SimSun", Georgia, serif;
+    font-size: 16px; line-height: 1.85;
+    color: #3A372F; margin-bottom: 16px;
+    padding-left: 14px;
+    border-left: 2px solid var(--fxc_halfline);
+  }
+  .fxc_body { font-size: 15px; line-height: 2; color: #3A372F; max-width: 34em; }
+  .fxc_body + .fxc_body { margin-top: 12px; }
+
+  /* 页脚 */
+  .fxc_colophon {
+    margin-top: 44px; padding-top: 14px;
+    border-top: 1px solid var(--fxc_halfline);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    font-size: 12px; color: var(--fxc_ink_soft);
+  }
+  .fxc_colophon a { color: var(--fxc_mark); text-decoration: none; border-bottom: 1px solid currentColor; }
+  .fxc_colophon a:hover { color: var(--fxc_ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fxc_panel_active { animation: none; }
+    .fxc_tab { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="fxc_page">
+
+  <header>
+    <div class="fxc_masthead_top">
+      <span>第 403 期</span>
+      <span>2026 年 11 月 2 日</span>
+    </div>
+    <h1 class="fxc_logo">新闻版面</h1>
+  </header>
+
+  <div class="fxc_tabs" data-fxc-tabs data-fxc-default="0" role="tablist" aria-label="新闻栏目">
+    <button type="button" class="fxc_tab fxc_tab_active" data-fxc-tab="0" role="tab" aria-selected="true">国内新闻</button>
+    <button type="button" class="fxc_tab" data-fxc-tab="1" role="tab" aria-selected="false">省内新闻</button>
+    <button type="button" class="fxc_tab" data-fxc-tab="2" role="tab" aria-selected="false">国际新闻</button>
+    <button type="button" class="fxc_tab" data-fxc-tab="3" role="tab" aria-selected="false">最热新闻</button>
+  </div>
+
+  <section class="fxc_panels">
+
+    <article class="fxc_panel fxc_panel_active" data-fxc-panel="0" role="tabpanel">
+      <p class="fxc_dateline">北京 · 11 月 2 日</p>
+      <h2 class="fxc_headline">城市更新进入收尾阶段，老街区改造转向日常维护</h2>
+      <p class="fxc_lede">历时三年的街区改造工程本月完成验收。与以往不同的是，本轮工程把预算的三成留给后续维护，而非一次性投入硬件。</p>
+      <p class="fxc_body">改造覆盖了十二个片区的管网、路面与公共照明。负责该项目的团队表示，居民最关心的不是外立面，而是雨天是否积水、夜间路灯是否够亮，因此验收标准从"完工照片"改为"连续三个雨季的运行记录"。</p>
+      <p class="fxc_body">下一阶段将把维护责任移交给街道，并公开每季度的巡检结果。</p>
+    </article>
+
+    <article class="fxc_panel" data-fxc-panel="1" role="tabpanel" hidden>
+      <p class="fxc_dateline">省域 · 11 月 2 日</p>
+      <h2 class="fxc_headline">省内县乡公交线路调整，末班车时间整体延后一小时</h2>
+      <p class="fxc_lede">新的运行图自本周一起执行，覆盖省内四十三个县区的城乡线路，重点解决务工人员晚间返程问题。</p>
+      <p class="fxc_body">调整后，城乡线路末班车普遍从十八时三十分延后至十九时三十分，山区线路增加一班夜间班次。运营方同步在十二个中转站增设候车照明与实时到站屏。</p>
+      <p class="fxc_body">据运营方统计，调整首周的夜间客流较此前上升约两成，空驶里程随之下降。</p>
+    </article>
+
+    <article class="fxc_panel" data-fxc-panel="2" role="tabpanel" hidden>
+      <p class="fxc_dateline">国际 · 11 月 2 日</p>
+      <h2 class="fxc_headline">多国气象机构联合发布冬季极端天气预警</h2>
+      <p class="fxc_lede">预警指出，今年冬季北大西洋暖流异常偏弱，北欧与北美东岸可能出现较常年更频繁的暴雪过程。</p>
+      <p class="fxc_body">联合预警首次把电网负荷、交通调度与港口作业三项指标并列评估，并为每个区域给出分级响应建议。参与机构表示，单一的气温预报已不足以支撑决策，需要把基础设施的承受能力一并纳入。</p>
+      <p class="fxc_body">相关数据将在下月以开放数据集的形式发布，供各成员国的地方政府调用。</p>
+    </article>
+
+    <article class="fxc_panel" data-fxc-panel="3" role="tabpanel" hidden>
+      <p class="fxc_dateline">热榜 · 11 月 2 日</p>
+      <h2 class="fxc_headline">这周被反复讨论的三件事：通勤、菜价与旧手机</h2>
+      <p class="fxc_lede">本周读者来信最集中的三个话题，都指向同一个词——"够用"。</p>
+      <p class="fxc_body">通勤话题下，讨论焦点从"更快"转向"更稳"；菜价话题里，读者更关心价格波动的幅度而非绝对高低；旧手机话题则围绕换机周期拉长后的维修成本展开。</p>
+      <p class="fxc_body">编辑部据此整理了三份读者提问清单，将在下周的版面中逐条回应。</p>
+    </article>
+
+  </section>
+
+  <footer class="fxc_colophon">
+    <a href="index.html">返回首页</a>
+    <span>选项卡逻辑：js/fxc-tabs.js（外部引用，可复用）</span>
+  </footer>
+
+</div>
+
+<script src="js/fxc-tabs.js"></script>
+</body>
+</html>

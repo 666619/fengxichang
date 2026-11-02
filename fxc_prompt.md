@@ -35,85 +35,27 @@
 
 ---
 
-## 2026-10-29 13:36:39 | opencode/big-pickle
 
-Create or update `AGENTS.md` for this repository.
+## 2026-11-02 13:50:37 | DeepSeek-V4.1-Flash
 
-The goal is a compact instruction file that helps future OpenCode sessions avoid mistakes and ramp up quickly. Every line should answer: "Would an agent likely miss this without help?" If not, leave it out.
-
-User-provided focus or constraints (honor these):
-
-
-## How to investigate
-
-Read the highest-value sources first:
-- `README*`, root manifests, workspace config, lockfiles
-- build, test, lint, formatter, typecheck, and codegen config
-- CI workflows and pre-commit / task runner config
-- existing instruction files (`AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, `.cursorrules`, `.github/copilot-instructions.md`)
-- repo-local OpenCode config such as `opencode.json`
-
-If architecture is still unclear after reading config and docs, inspect a small number of representative code files to find the real entrypoints, package boundaries, and execution flow. Prefer reading the files that explain how the system is wired together over random leaf files.
-
-Prefer executable sources of truth over prose. If docs conflict with config or scripts, trust the executable source and only keep what you can verify.
-
-## What to extract
-
-Look for the highest-signal facts for an agent working in this repo:
-- exact developer commands, especially non-obvious ones
-- how to run a single test, a single package, or a focused verification step
-- required command order when it matters, such as `lint -> typecheck -> test`
-- monorepo or multi-package boundaries, ownership of major directories, and the real app/library entrypoints
-- framework or toolchain quirks: generated code, migrations, codegen, build artifacts, special env loading, dev servers, infra deploy flow
-- repo-specific style or workflow conventions that differ from defaults
-- testing quirks: fixtures, integration test prerequisites, snapshot workflows, required services, flaky or expensive suites
-- important constraints from existing instruction files worth preserving
-
-Good `AGENTS.md` content is usually hard-earned context that took reading multiple files to infer.
-
-## Questions
-
-Only ask the user questions if the repo cannot answer something important. Use the `question` tool for one short batch at most.
-
-Good questions:
-- undocumented team conventions
-- branch / PR / release expectations
-- missing setup or test prerequisites that are known but not written down
-
-Do not ask about anything the repo already makes clear.
-
-## Writing rules
-
-Include only high-signal, repo-specific guidance such as:
-- exact commands and shortcuts the agent would otherwise guess wrong
-- architecture notes that are not obvious from filenames
-- conventions that differ from language or framework defaults
-- setup requirements, environment quirks, and operational gotchas
-- references to existing instruction sources that matter
-
-Exclude:
-- generic software advice
-- long tutorials or exhaustive file trees
-- obvious language conventions
-- speculative claims or anything you could not verify
-- content better stored in another file referenced via `opencode.json` `instructions`
-
-When in doubt, omit.
-
-Prefer short sections and bullets. If the repo is simple, keep the file simple. If the repo is large, summarize the few structural facts that actually change how an agent should work.
-
-If `AGENTS.md` already exists at `D:\0403`, improve it in place rather than rewriting blindly. Preserve verified useful guidance, delete fluff or stale claims, and reconcile it with the current codebase.
+AGENTS.md 所有说明、检查条目统一简体中文；文件路径、HTML、CSS、JS 标识符保留英文。后续在这个项目里，生成文档、检查清单都遵守这条约定。
 
 ---
 
+## 2026-11-02 14:20:05 | DeepSeek-V4.1-Flash
+
+D:\桌面\6 代码包含个人信息，请给我新建一个html文件，显示tab选项卡，选项卡分别为国内新闻、省内新闻、国际新闻、最热新闻，国内新闻作为默认选项。就是、文件单独放在js文件夹中，外部引用，js部分tab选项卡可复用。实现代码中包含事件监听，清除所有选项卡的选中状态再设置当前元素的选中状态。
 
 ---
 
+## 2026-11-02 14:30:38 | DeepSeek-V4.1-Flash
 
+请给我新建一个html文件，显示tab选项卡，选项卡分别为沪涨、沪跌、深涨、深跌，沪涨作为默认选项。就是、文件单独放在js文件夹中，外部引用，js部分tab选项卡可复用。实现代码中包含事件监听，清除所有选项卡的选中状态再设置当前元素的选中状态。D:\桌面\6
 
+---
 
-## 2026-10-29 14:19:13 | Kimi-K3
+## 2026-11-02 14:35:42 | DeepSeek-V4.1-Flash
 
-创建技能skill：提交到github，将本项目提交commit并push到 https://github.com/666619/fengxichang403.git ，使用已设置公钥。
+创建技能skill：提交到github，将本项目 d:\0403\tab-market.html 提交commit并push到 https://github.com/666619/fengxichang.git ，使用已设置公钥。
 
 ---
